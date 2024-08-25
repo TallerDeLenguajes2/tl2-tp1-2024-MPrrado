@@ -3,7 +3,7 @@ enum Estado
 {
     Pendiente = 0,
     Entregado = 1,
-    Cancelado = 99
+    Cancelado = 999
 }
 
 
@@ -12,15 +12,18 @@ namespace espacioPedidos
     public class Pedidos
     {
         private int nroPedido;
-        private string observaciones;
+        private string observacion;
         private Cliente cliente;
         private Estado estado;
 
-        public Pedidos(int nroPedido, string observaciones, Cliente cliente)
+        public int NroPedido { get => nroPedido; }
+        internal Estado Estado { get => estado; set => estado = value; }
+
+        public Pedidos(int nroPedido, string observaciones)
         {
             this.nroPedido = nroPedido;
-            this.observaciones = observaciones;
-            this.cliente = cliente;
+            this.observacion = observaciones;
+            cliente = new Cliente ($"matias prado{nroPedido}", "santa fe 3333", "porton negro", 381);
             this.estado = Estado.Pendiente;
         }
         public void VerDireccionCliente()
@@ -34,6 +37,14 @@ namespace espacioPedidos
             System.Console.WriteLine($"Direccion: {cliente.direccion}");
             System.Console.WriteLine($"Referencia direccion {cliente.refDireccion}");
 
+        }
+
+        public void mostrarPedido()
+        {
+            System.Console.WriteLine($"Numero de pedido: {nroPedido}");
+            System.Console.WriteLine($"Observacion: {observacion}");
+            System.Console.WriteLine($"Datos cliente: Nombre: {cliente.nombre}\nDireccion{cliente.direccion}\n Referencia direccion: {cliente.refDireccion}\n Telefono: {cliente.telefono}\n");
+            System.Console.WriteLine($"Estado: {estado}");
         }
     }
 
