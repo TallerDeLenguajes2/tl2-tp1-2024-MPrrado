@@ -43,7 +43,7 @@ namespace espacioPedidos
         {
             System.Console.WriteLine($"Numero de pedido: {nroPedido}");
             System.Console.WriteLine($"Observacion: {observacion}");
-            System.Console.WriteLine($"Datos cliente: Nombre: {cliente.nombre}\nDireccion{cliente.direccion}\n Referencia direccion: {cliente.refDireccion}\n Telefono: {cliente.telefono}\n");
+            System.Console.WriteLine($"Datos cliente:\nNombre: {cliente.nombre}\nDireccion: {cliente.direccion}\nReferencia direccion: {cliente.refDireccion}\nTelefono: {cliente.telefono}");
             System.Console.WriteLine($"Estado: {estado}");
         }
     }
