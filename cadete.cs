@@ -9,6 +9,8 @@ namespace espacioCadetes
         private int telefono;
         private List<Pedidos> listaPedidos;
 
+        public List<Pedidos> ListaPedidos { get => listaPedidos;}
+
         public Cadete(int id, string nombre, string direccion, int telefono)
         {
             this.id = id;
@@ -37,46 +39,58 @@ namespace espacioCadetes
             System.Console.WriteLine($"Nombre: {nombre}\n Dirección: {direccion}\nTeléfono: {telefono}");
         }
 
-        public void EntregarPedido()
+        public void CambiarEstadoPedido(List<Pedidos> listaPedidos)
         {
-            int indicePedido = 0;
-            int nroPedidoEntregar;
-            System.Console.WriteLine("Ingrese el numero de pedido para entregar:");
-            while(int.TryParse(Console.ReadLine(), out nroPedidoEntregar))
+            int nroPedido;
+            while(!int.TryParse(Console.ReadLine(), out nroPedido) || nroPedido > listaPedidos.Count || nroPedido < 1)
             {
-                Console.WriteLine("Ingrese un numero valido de pedido:");
-            }
-            foreach(Pedidos pedido in listaPedidos)
-            {
-                if(pedido.NroPedido == nroPedidoEntregar)
-                {
-                    break;
-                }
-                indicePedido++;
+                System.Console.WriteLine("Error ingrese un numero de pedido valido");
             }
 
-            listaPedidos[indicePedido].Estado = Estado.Entregado;
+            foreach (var pedido in listaPedidos)
+            {
+                if(pedido.NroPedido == nroPedido)
+                {
+                    System.Console.WriteLine("Seleccione que desea hacer con este pedido: ");
+                    System.Console.WriteLine();
+                    int opcion = 0;
+                    while(opcion <1 || opcion > 2)
+                    {
+                        System.Console.WriteLine("[1] ENTREGADO");
+                        System.Console.WriteLine("[2] CANCELADO");
+                        int.TryParse(Console.ReadLine(), out opcion);
+                        if(opcion <1 || opcion > 2)
+                        {
+                            System.Console.WriteLine("ERROR, ingrese una opcion válida");
+                        }
+                    }
+
+                    switch(opcion)
+                    {
+                        case 1:
+                            pedido.Estado = Estado.Entregado;
+                            break;
+                        case 2:
+                            pedido.Estado = Estado.Cancelado;
+                            break;
+                    }
+                }
+            }
+        }
+    
+        public void AgregarPedido(Pedidos pedido)
+        {
+            listaPedidos.Add(pedido);
         }
 
-        public void CancelarPedido()
+        public void RemoverPedido(Pedidos pedido)
         {
-            int indicePedido = 0;
-            int nroPedidoEntregar;
-            System.Console.WriteLine("Ingrese el numero de pedido para cancelar:");
-            while(int.TryParse(Console.ReadLine(), out nroPedidoEntregar))
-            {
-                Console.WriteLine("Ingrese un numero valido de pedido:");
-            }
-            foreach(Pedidos pedido in listaPedidos)
-            {
-                if(pedido.NroPedido == nroPedidoEntregar)
-                {
-                    break;
-                }
-                indicePedido++;
-            }
+            listaPedidos.Remove(pedido);
+        }
 
-            listaPedidos[indicePedido].Estado = Estado.Cancelado;
+        public bool PertenecePedido(Pedidos pedido)
+        {
+            return listaPedidos.Contains(pedido);
         }
 
     }
