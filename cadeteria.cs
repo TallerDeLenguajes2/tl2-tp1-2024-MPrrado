@@ -11,11 +11,11 @@ namespace espacioCadeteria
         public string Nombre { get => nombre; }
         public int Telefono { get => telefono; }
 
-        public Cadeteria(string nombre, int telefono)
+        public Cadeteria(string nombre, int telefono, List<Cadete> listadoCadetes)
         {
             this.nombre = nombre;
             this.telefono = telefono;
-            listadoCadetes = new List<Cadete>();
+            this.listadoCadetes = listadoCadetes;
         }
 
         public Pedidos AltaPedidos(ref int nroPedidoAlta, string[] observaciones)
