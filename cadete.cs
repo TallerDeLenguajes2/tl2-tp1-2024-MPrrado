@@ -53,6 +53,20 @@ namespace espacioCadetes
             return listaPedidos.Contains(pedido);
         }
 
+        public double JornalACobrar()
+        {
+            double jornal = 10000;
+            foreach (var pedido in listaPedidos)
+            {
+                if(pedido.Estado == Estado.Entregado)
+                {
+                    jornal += 500;
+                }
+
+            }
+            return jornal;
+        }
+
     }
 
 }
