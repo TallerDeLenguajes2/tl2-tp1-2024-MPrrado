@@ -2,7 +2,7 @@
 using espacioCadetes;
 using espacioLecturaCargaDatos;
 using espacioPedidos;
-using Clientes;
+// using Clientes;
 using System.ComponentModel;
 using System.Collections.Immutable;
 using System.Runtime.InteropServices;
@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 //constantes
 
 string[] obs = { "Con sal Por favor", "Sin sal", "Con mayonesa", "sin tomate", "sin cebolla", "sin pepino", "con ketchup", "con pan", "con agua", "sin lechuga", "sin queso", "con sprite por favor" };
-obs.ToImmutableArray();
+obs.ToImmutableArray(); //hacemos que el arreglo obs sea inmutable, asi lo puedo manejar como si fuera una cte
 
 
 //variables e instanciaciones
@@ -33,7 +33,7 @@ if (cadetes != null)
             System.Console.WriteLine("[1] ALTA PEDIDOS");
             System.Console.WriteLine("[2] ASIGNAR PEDIDO A CADETE");
             System.Console.WriteLine("[3] CAMBIAR ESTADO PEDIDO");
-            System.Console.WriteLine("[4]REASIGNAR PEDIDO");
+            System.Console.WriteLine("[4] REASIGNAR PEDIDO");
             System.Console.WriteLine("[5] SALIR");
             System.Console.Write("Ingrese una opción: ");
             if (int.TryParse(Console.ReadLine(), out opcion) && opcion >= 1 && opcion <= 5)
