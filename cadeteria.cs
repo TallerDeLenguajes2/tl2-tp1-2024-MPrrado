@@ -29,21 +29,10 @@ namespace espacioCadeteria
         public void AsignarPedido(Pedidos pedido)
         {
             
-            int nroCadete;
-            //Aquí se selecciona un cadete y se le asigna el pedido
-
-            MostrarCadetes();
-
-            System.Console.WriteLine("Seleccione el ID del cadete para asignar el pedido");
-            while (!int.TryParse(Console.ReadLine(), out nroCadete) || nroCadete > listadoCadetes.Count)
-            {
-                System.Console.WriteLine("ERROR, ingrese un numero valido");
-            }
-            var cadeteAsignado = listadoCadetes[nroCadete - 1];
+            Random rnd = new Random();
+            //Aquí se asigna aleatoriamente el pedido a un cadete
+            var cadeteAsignado = listadoCadetes[rnd.Next(0,10)];
             cadeteAsignado.AgregarPedido(pedido);
-            System.Console.WriteLine("ASGINACION CON EXITO!");
-            Thread.Sleep(500);
-            Console.Clear();
         }
 
         public void CambiarEstadoPedido(List<Pedidos> listaPedidos)
@@ -54,7 +43,7 @@ namespace espacioCadeteria
             System.Console.WriteLine();
             foreach (var pedido in listaPedidos)
             {
-                if (pedido.Estado != Estado.Cancelado || pedido.Estado != Estado.Entregado)
+                if (pedido.Estado == Estado.Pendiente)
                 {
                     pedido.mostrarPedido();
                 }
@@ -97,6 +86,7 @@ namespace espacioCadeteria
                             Thread.Sleep(500);
                             break;
                     }
+                    Console.Clear();
                 }
             }
         }
@@ -147,6 +137,7 @@ namespace espacioCadeteria
             }
 
         }
+
         private void MostrarCadetes()
         {
             System.Console.WriteLine("----------CADETES DISPONIBLES----------");
