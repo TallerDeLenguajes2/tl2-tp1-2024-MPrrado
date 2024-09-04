@@ -7,9 +7,12 @@ namespace espacioCadetes
         private string nombre;
         private string direccion;
         private int telefono;
-        private List<Pedidos> listaPedidos;
 
-        public List<Pedidos> ListaPedidos { get => listaPedidos;}
+        public int Id { get => id;}
+
+        // private List<Pedidos> listaPedidos;
+
+        // public List<Pedidos> ListaPedidos { get => listaPedidos;}
 
         public Cadete(int id, string nombre, string direccion, int telefono)
         {
@@ -17,20 +20,20 @@ namespace espacioCadetes
             this.nombre = nombre;
             this.direccion = direccion;
             this.telefono = telefono;
-            listaPedidos = new List<Pedidos>();
+            // listaPedidos = new List<Pedidos>();
         }
 
-        public void MostrarPedidos()
-        {
-            foreach (var pedido in listaPedidos)
-            {
-                System.Console.WriteLine($"-------Pedido Nro: {pedido.NroPedido}, Estado: {pedido.Estado}");
-            }
-        }
+        // public void MostrarPedidos()
+        // {
+        //     foreach (var pedido in listaPedidos)
+        //     {
+        //         System.Console.WriteLine($"-------Pedido Nro: {pedido.NroPedido}, Estado: {pedido.Estado}");
+        //     }
+        // }
 
         public void MostrarID()
         {
-            System.Console.WriteLine($"El ID del cadete es: {id}");
+            System.Console.WriteLine($"El ID del cadete es: {Id}");
         }
 
         public void MostrarDatos()
@@ -38,20 +41,20 @@ namespace espacioCadetes
             System.Console.WriteLine($"Nombre: {nombre}\nDirección: {direccion}\nTeléfono: {telefono}");
         }
     
-        public void AgregarPedido(Pedidos pedido)
-        {
-            listaPedidos.Add(pedido);
-        }
+        // public void AgregarPedido(Pedidos pedido)
+        // {
+        //     listaPedidos.Add(pedido);
+        // }
 
-        public void RemoverPedido(Pedidos pedido)
-        {
-            listaPedidos.Remove(pedido);
-        }
+        // public void RemoverPedido(Pedidos pedido)
+        // {
+        //     listaPedidos.Remove(pedido);
+        // }
 
-        public bool PertenecePedido(Pedidos pedido)
-        {
-            return listaPedidos.Contains(pedido);
-        }
+        // public bool PertenecePedido(Pedidos pedido)
+        // {
+        //     return listaPedidos.Contains(pedido);
+        // }
 
     }
 

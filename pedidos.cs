@@ -1,4 +1,5 @@
 using Clientes;
+using espacioCadetes;
 enum Estado 
 {
     Pendiente = 0,
@@ -15,9 +16,10 @@ namespace espacioPedidos
         private string observacion;
         private Cliente cliente;
         private Estado estado;
-
+        private Cadete cadete;
         public int NroPedido { get => nroPedido; }
         internal Estado Estado { get => estado; set => estado = value; }
+        public Cadete Cadete { get => cadete; set => cadete = value; }
 
         public Pedidos(int nroPedido, string observaciones)
         {
