@@ -41,8 +41,7 @@ if (cadetes != null)
                 switch (opcion)
                 {
                     case 1:
-                        pedido = cadeteria.AltaPedidos(ref nroPedido, obs);
-                        listaPedidos.Add(pedido);
+                        cadeteria.AltaPedidos(ref nroPedido, obs);
                         System.Console.WriteLine("PEDIDO CARGADO CON EXITO!");
                         Thread.Sleep(500);
                         Console.Clear();
