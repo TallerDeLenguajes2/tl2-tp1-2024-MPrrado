@@ -55,7 +55,7 @@ namespace espacioCadetes
 
         public double JornalACobrar()
         {
-            double jornal = 10000;
+            double jornal = 5000;
             foreach (var pedido in listaPedidos)
             {
                 if(pedido.Estado == Estado.Entregado)
