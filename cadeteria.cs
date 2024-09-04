@@ -10,6 +10,7 @@ namespace espacioCadeteria
         private List<Cadete> listadoCadetes;
         public string Nombre { get => nombre; }
         public int Telefono { get => telefono; }
+        public List<Pedidos> listaPedidos;
 
         public Cadeteria(string nombre, int telefono, List<Cadete> listadoCadetes)
         {
@@ -18,35 +19,34 @@ namespace espacioCadeteria
             this.listadoCadetes = listadoCadetes;
         }
 
-        public Pedidos AltaPedidos(ref int nroPedidoAlta, string[] observaciones)
+        public void AltaPedidos(ref int nroPedidoAlta, string[] observaciones)
         {
             Random rnd = new Random();
             Pedidos pedido = new Pedidos(nroPedidoAlta, observaciones[rnd.Next(0, 10)]);
             nroPedidoAlta++;
-            return pedido;
+            listaPedidos.Add(pedido);
         }
 
-        public void AsignarPedido(Pedidos pedido)
+        public void AsignarCadeteAPedido(int idCadete, int idPedido)
         {
-            
-            int nroCadete;
             //Aquí se selecciona un cadete y se le asigna el pedido
-
-            MostrarCadetes();
-
-            System.Console.WriteLine("Seleccione el ID del cadete para asignar el pedido");
-            while (!int.TryParse(Console.ReadLine(), out nroCadete) || nroCadete > listadoCadetes.Count)
+            foreach(var pedido in listaPedidos)
             {
-                System.Console.WriteLine("ERROR, ingrese un numero valido");
+                if(pedido.NroPedido == idPedido)
+                {
+                    foreach(var cadete in listadoCadetes)
+                    {
+                        if(cadete.Id == idCadete)
+                        {
+                            pedido.Cadete = cadete;
+                        }
+                    }
+                }
             }
-            var cadeteAsignado = listadoCadetes[nroCadete - 1];
-            cadeteAsignado.AgregarPedido(pedido);
-            System.Console.WriteLine("ASGINACION CON EXITO!");
-            Thread.Sleep(500);
-            Console.Clear();
+
         }
 
-        public void CambiarEstadoPedido(List<Pedidos> listaPedidos)
+        public void CambiarEstadoPedido()
         {
             int nroPedido;
             System.Console.WriteLine("Los pedidos disponibles son:");
@@ -101,7 +101,7 @@ namespace espacioCadeteria
             }
         }
 
-        public void ReasignarPedidoCadete(List<Pedidos> listaPedidos)
+        public void ReasignarPedidoCadete()
         {
             System.Console.WriteLine("Los pedidos disponibles para reasignar son:");
             System.Console.WriteLine();
@@ -128,7 +128,7 @@ namespace espacioCadeteria
             {
                 System.Console.WriteLine("ERROR, ingrese un numero valido");
             }
-            foreach (var cadete in listadoCadetes)
+            foreach (var pedido in listaPedidos)
             {
                 // foreach (var pedido in cadete.ListaPedidos)
                 // {
@@ -138,7 +138,7 @@ namespace espacioCadeteria
                 //         break;
                 //     }
                 // }
-                if (cadete.PertenecePedido(listaPedidos[nroPedido - 1]))
+                if (pedido.Cadete.Id == nroCadete)
                 {
                     cadete.RemoverPedido(listaPedidos[nroPedido - 1]);
                     listadoCadetes[nroCadete-1].AgregarPedido(listaPedidos[nroPedido-1]);
@@ -155,12 +155,23 @@ namespace espacioCadeteria
             {
                 cadete.MostrarID();
                 cadete.MostrarDatos();
-                System.Console.WriteLine("pedidos del cadete:");
-                System.Console.WriteLine();
-                cadete.MostrarPedidos();
                 System.Console.WriteLine("------------------------------------");
                 System.Console.WriteLine();
             }
+        }
+
+        public double JornalACobrar(int idCadete)
+        {
+            double jornal = 5000;
+            System.Console.WriteLine($"El cadete de ID:{idCadete} cobra en motivo de jornal:");
+            foreach(var pedido in listaPedidos)
+            {
+                if(pedido.Cadete.Id == idCadete && pedido.Estado == Estado.Entregado)
+                {
+                    jornal+=500;
+                }
+            }
+            return jornal;
         }
     }
 }
