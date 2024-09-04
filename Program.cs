@@ -8,6 +8,7 @@ using System.Collections.Immutable;
 using System.Runtime.InteropServices;
 
 //constantes
+const int PEDIDO_A_CARGAR = 10;
 
 string[] obs = { "Con sal Por favor", "Sin sal", "Con mayonesa", "sin tomate", "sin cebolla", "sin pepino", "con ketchup", "con pan", "con agua", "sin lechuga", "sin queso", "con sprite por favor" };
 obs.ToImmutableArray(); //hacemos que el arreglo obs sea inmutable, asi lo puedo manejar como si fuera una cte
@@ -17,10 +18,10 @@ obs.ToImmutableArray(); //hacemos que el arreglo obs sea inmutable, asi lo puedo
 Pedidos pedido = null;
 List<Pedidos> listaPedidos = new List<Pedidos>(); //creamos esta lista para poder manejarnos mas facilmente con el alta de pedidos
 // List<Cliente> listaClientes = CargarDatos.CargarDatosClientes();
-List<Cadete> cadetes = CargarDatos.CargarDatosCadete();
-if (cadetes != null)
+List<Cadete> listaCadetes = CargarDatos.CargarDatosCadete();
+if (listaCadetes != null)
 {
-    Cadeteria cadeteria = CargarDatos.CargarDatosCadeteria(cadetes);
+    Cadeteria cadeteria = CargarDatos.CargarDatosCadeteria(listaCadetes);
     if (cadeteria != null)
     {
         System.Console.WriteLine("CADETERIA CARGADA CON ÉXITO");
@@ -31,30 +32,41 @@ if (cadetes != null)
         {
             System.Console.WriteLine("-----MENU-----");
             System.Console.WriteLine("[1] ALTA PEDIDOS");
-            System.Console.WriteLine("[2] ASIGNAR PEDIDO A CADETE");
+            System.Console.WriteLine("[2] ASIGNAR PEDIDOS A CADETES");
             System.Console.WriteLine("[3] CAMBIAR ESTADO PEDIDO");
             System.Console.WriteLine("[4] REASIGNAR PEDIDO");
-            System.Console.WriteLine("[5] SALIR");
+            System.Console.WriteLine("[5] JORNALES A COBRAR");
+            System.Console.WriteLine("[6] INFORME PEDIDOS");
+            System.Console.WriteLine("[7] SALIR");
             System.Console.Write("Ingrese una opción: ");
             if (int.TryParse(Console.ReadLine(), out opcion) && opcion >= 1 && opcion <= 5)
             {
                 switch (opcion)
                 {
                     case 1:
-                        pedido = cadeteria.AltaPedidos(ref nroPedido, obs);
-                        listaPedidos.Add(pedido);
-                        System.Console.WriteLine("PEDIDO CARGADO CON EXITO!");
+                        for(int i = 0; i < PEDIDO_A_CARGAR; i++)
+                        {
+                            pedido = cadeteria.AltaPedidos(ref nroPedido, obs);
+                            listaPedidos.Add(pedido);
+                        }
+                        System.Console.WriteLine("PEDIDOS CARGADOS CON EXITO!");
                         Thread.Sleep(500);
                         Console.Clear();
                         break;
                     case 2:
                         if (pedido != null)
                         {
-                            cadeteria.AsignarPedido(pedido);
+                            foreach(var pedidoAlta in listaPedidos)
+                            {
+                                cadeteria.AsignarPedido(pedidoAlta);
+                            }
+                            System.Console.WriteLine("ASGINACION CON EXITO!");
+                            Thread.Sleep(500);
+                            Console.Clear();
                         }
                         else
                         {
-                            System.Console.WriteLine("ERROR, PRIMERO DEBE HABER PEDIDO DADOS DE ALTA");
+                            System.Console.WriteLine("ERROR, PRIMERO DEBE HABER PEDIDOS DADOS DE ALTA");
                             Thread.Sleep(1000);
                             Console.Clear();
                         }
@@ -66,6 +78,24 @@ if (cadetes != null)
                         cadeteria.ReasignarPedidoCadete(listaPedidos);
                         break;
                     case 5:
+                        Console.Clear();
+                        System.Console.WriteLine("----------------------------");
+                        System.Console.WriteLine("JORNALES A COBRAR:");
+                        foreach(var cadete in listaCadetes)
+                        {
+                            cadete.MostrarDatos();
+                            System.Console.WriteLine($"Jornal a cobrar: ${cadete.JornalACobrar()}");
+                            System.Console.WriteLine("----------------------------");
+                        }
+                        System.Console.WriteLine("presione una tecla para continuar...");
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    case 6:
+                        //generamos un informe a traves de las sentencias Linq
+                        
+                        break;
+                    case 7:
                         salir = true;
                         break;
                 }
