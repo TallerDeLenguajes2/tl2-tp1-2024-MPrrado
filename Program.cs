@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 
 //constantes
 const int PEDIDO_A_CARGAR = 10;
+const double GANANCIA_PEDIDO_ENTREGADO = 2000;
 
 string[] obs = { "Con sal Por favor", "Sin sal", "Con mayonesa", "sin tomate", "sin cebolla", "sin pepino", "con ketchup", "con pan", "con agua", "sin lechuga", "sin queso", "con sprite por favor" };
 obs.ToImmutableArray(); //hacemos que el arreglo obs sea inmutable, asi lo puedo manejar como si fuera una cte
@@ -28,7 +29,7 @@ if (listaCadetes != null)
         int nroPedido = 1;
         int opcion = 0;
         bool salir = false;
-        while (opcion < 1 || opcion > 5 || !salir)
+        while (opcion < 1 || opcion > 7 || !salir)
         {
             System.Console.WriteLine("-----MENU-----");
             System.Console.WriteLine("[1] ALTA PEDIDOS");
@@ -39,7 +40,7 @@ if (listaCadetes != null)
             System.Console.WriteLine("[6] INFORME PEDIDOS");
             System.Console.WriteLine("[7] SALIR");
             System.Console.Write("Ingrese una opción: ");
-            if (int.TryParse(Console.ReadLine(), out opcion) && opcion >= 1 && opcion <= 5)
+            if (int.TryParse(Console.ReadLine(), out opcion) && opcion >= 1 && opcion <= 7)
             {
                 switch (opcion)
                 {
@@ -93,7 +94,41 @@ if (listaCadetes != null)
                         break;
                     case 6:
                         //generamos un informe a traves de las sentencias Linq
-                        
+                        IEnumerable<Pedidos> pedidosEntregados =  //aqui obtenemos los pedidos que fueron entregados de la lista de pedidos que manejamos exteriormente LO ESTA ARMANDO MAL!!
+                        listaPedidos.TakeWhile(pedido => pedido.Estado == Estado.Entregado);
+
+                        IEnumerable<Cadete> cadetesConPedidosEntregados = 
+                        from cadete in listaCadetes
+                        where cadete.ListaPedidos != null && cadete.ListaPedidos.Any(x => x.Estado == Estado.Entregado)
+                        select cadete;
+
+                        System.Console.WriteLine("-----------------------------------------");
+                        System.Console.WriteLine("INFORME PEDIDOS:");
+                        System.Console.WriteLine();
+                        System.Console.WriteLine("PEDIDOS REALIZADOS POR CADA CADETE");
+                        foreach (var cadete in cadetesConPedidosEntregados)
+                        {
+                            int contador = 0;
+                            System.Console.WriteLine("---------------------");
+                            cadete.MostrarDatos();
+                            System.Console.WriteLine("Pedidos entregados:");
+                            foreach (var pedidoEntregado in cadete.ListaPedidos)
+                            {
+                                if(pedidoEntregado.Estado == Estado.Entregado)
+                                {
+                                    contador++;
+                                }
+                            }
+                            double promedioPedidos = cadete.ListaPedidos.Count / (double)contador;
+                            Math.Round(promedioPedidos,2);
+                            System.Console.WriteLine(contador);
+                            System.Console.WriteLine($"Promedio de entrega:{promedioPedidos}");
+                            System.Console.WriteLine("---------------------");
+                        }
+
+                        System.Console.WriteLine($"PEDIDOS TOTAL REALIZADOS EN ESTA JORNADA: {pedidosEntregados.Count()}");
+                        System.Console.WriteLine($"GANANCIA TOTAL DE LA JORNADA: {pedidosEntregados.Count() * GANANCIA_PEDIDO_ENTREGADO}");
+
                         break;
                     case 7:
                         salir = true;
