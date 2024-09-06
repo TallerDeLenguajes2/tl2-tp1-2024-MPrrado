@@ -94,10 +94,12 @@ if (listaCadetes != null)
                         break;
                     case 6:
                         //generamos un informe a traves de las sentencias Linq
-                        IEnumerable<Pedidos> pedidosEntregados =  //aqui obtenemos los pedidos que fueron entregados de la lista de pedidos que manejamos exteriormente LO ESTA ARMANDO MAL!!
-                        listaPedidos.TakeWhile(pedido => pedido.Estado == Estado.Entregado);
+                        IEnumerable<Pedidos> pedidosEntregados =  //aqui obtenemos los pedidos que fueron entregados de la lista de pedidos que manejamos exteriormente
+                        listaPedidos
+                        .Where(pedido => pedido.Estado == Estado.Entregado);
+                        
 
-                        IEnumerable<Cadete> cadetesConPedidosEntregados = 
+                        IEnumerable<Cadete> cadetesConPedidosEntregados = //tener cuidado con esta expresion query de linq por como procesa las query
                         from cadete in listaCadetes
                         where cadete.ListaPedidos != null && cadete.ListaPedidos.Any(x => x.Estado == Estado.Entregado)
                         select cadete;
@@ -111,7 +113,6 @@ if (listaCadetes != null)
                             int contador = 0;
                             System.Console.WriteLine("---------------------");
                             cadete.MostrarDatos();
-                            System.Console.WriteLine("Pedidos entregados:");
                             foreach (var pedidoEntregado in cadete.ListaPedidos)
                             {
                                 if(pedidoEntregado.Estado == Estado.Entregado)
@@ -119,10 +120,10 @@ if (listaCadetes != null)
                                     contador++;
                                 }
                             }
-                            double promedioPedidos = cadete.ListaPedidos.Count / (double)contador;
+                            double promedioPedidos = (double)contador / cadete.ListaPedidos.Count * 100;
                             Math.Round(promedioPedidos,2);
-                            System.Console.WriteLine(contador);
-                            System.Console.WriteLine($"Promedio de entrega:{promedioPedidos}");
+                            System.Console.WriteLine($"Pedidos entregados:{contador}");
+                            System.Console.WriteLine($"Promedio de entrega:{promedioPedidos}%");
                             System.Console.WriteLine("---------------------");
                         }
 
