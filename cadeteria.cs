@@ -120,14 +120,6 @@ namespace espacioCadeteria
             }
             foreach (var cadete in listadoCadetes)
             {
-                // foreach (var pedido in cadete.ListaPedidos)
-                // {
-                //     if (pedido.NroPedido == nroPedido)
-                //     {
-                //         listaPedidos.Remove(pedido);
-                //         break;
-                //     }
-                // }
                 if (cadete.PertenecePedido(listaPedidos[nroPedido - 1]))
                 {
                     cadete.RemoverPedido(listaPedidos[nroPedido - 1]);
