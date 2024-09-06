@@ -1,4 +1,4 @@
-﻿using espacioCadeteria;
+﻿﻿using espacioCadeteria;
 using espacioCadetes;
 using espacioLecturaCargaDatos;
 using espacioPedidos;
@@ -8,63 +8,131 @@ using System.Collections.Immutable;
 using System.Runtime.InteropServices;
 
 //constantes
+const int PEDIDOS_A_CARGAR = 10;
+// const double GANANCIA_PEDIDO_ENTREGADO = 2000;
 
 string[] obs = { "Con sal Por favor", "Sin sal", "Con mayonesa", "sin tomate", "sin cebolla", "sin pepino", "con ketchup", "con pan", "con agua", "sin lechuga", "sin queso", "con sprite por favor" };
 obs.ToImmutableArray(); //hacemos que el arreglo obs sea inmutable, asi lo puedo manejar como si fuera una cte
 
 
 //variables e instanciaciones
-Pedidos pedido = null;
-List<Pedidos> listaPedidos = new List<Pedidos>(); //creamos esta lista para poder manejarnos mas facilmente con el alta de pedidos
-// List<Cliente> listaClientes = CargarDatos.CargarDatosClientes();
-List<Cadete> cadetes = CargarDatos.CargarDatosCadete();
-if (cadetes != null)
+List<Cadete> listaCadetes = CargarDatos.CargarDatosCadete();
+Random rnd = new Random();
+
+if (listaCadetes != null)
 {
-    Cadeteria cadeteria = CargarDatos.CargarDatosCadeteria(cadetes);
+    Cadeteria cadeteria = CargarDatos.CargarDatosCadeteria(listaCadetes);
     if (cadeteria != null)
     {
         System.Console.WriteLine("CADETERIA CARGADA CON ÉXITO");
         int nroPedido = 1;
         int opcion = 0;
         bool salir = false;
-        while (opcion < 1 || opcion > 5 || !salir)
+        while (opcion < 1 || opcion > 7 || !salir)
         {
             System.Console.WriteLine("-----MENU-----");
             System.Console.WriteLine("[1] ALTA PEDIDOS");
-            System.Console.WriteLine("[2] ASIGNAR PEDIDO A CADETE");
+            System.Console.WriteLine("[2] ASIGNAR PEDIDOS A CADETES");
             System.Console.WriteLine("[3] CAMBIAR ESTADO PEDIDO");
             System.Console.WriteLine("[4] REASIGNAR PEDIDO");
-            System.Console.WriteLine("[5] SALIR");
+            System.Console.WriteLine("[5] JORNALES A COBRAR");
+            System.Console.WriteLine("[6] INFORME PEDIDOS");
+            System.Console.WriteLine("[7] SALIR");
             System.Console.Write("Ingrese una opción: ");
-            if (int.TryParse(Console.ReadLine(), out opcion) && opcion >= 1 && opcion <= 5)
+            if (int.TryParse(Console.ReadLine(), out opcion) && opcion >= 1 && opcion <= 7)
             {
                 switch (opcion)
                 {
                     case 1:
-                        cadeteria.AltaPedidos(ref nroPedido, obs);
-                        System.Console.WriteLine("PEDIDO CARGADO CON EXITO!");
+                        for(int i = 0; i < PEDIDOS_A_CARGAR; i++)
+                        {
+                            cadeteria.AltaPedidos(ref nroPedido, obs);
+                        }
+                        System.Console.WriteLine("PEDIDOS CARGADOS CON EXITO!");
                         Thread.Sleep(500);
                         Console.Clear();
                         break;
                     case 2:
-                        if (pedido != null)
+                        try
                         {
-                            cadeteria.AsignarPedido(pedido);
-                        }
-                        else
+                            int i = 0;
+                            int n = 2*i+1;
+                            while(n <= cadeteria.listaPedidos.Count)
+                            {
+                                cadeteria.AsignarCadeteAPedido(rnd.Next(0,10), n);
+                                i++;
+                                n = 2*i+1;
+                            }
+                            System.Console.WriteLine("ASGINACION CON EXITO!");
+                            Thread.Sleep(500);
+                            Console.Clear();
+                        }catch(Exception e)
                         {
-                            System.Console.WriteLine("ERROR, PRIMERO DEBE HABER PEDIDO DADOS DE ALTA");
+                            System.Console.WriteLine("ERROR, PRIMERO DEBE HABER PEDIDOS DADOS DE ALTA");
                             Thread.Sleep(1000);
                             Console.Clear();
                         }
                         break;
                     case 3:
-                        cadeteria.CambiarEstadoPedido(listaPedidos);
+                        cadeteria.CambiarEstadoPedido();
                         break;
                     case 4:
-                        cadeteria.ReasignarPedidoCadete(listaPedidos);
+                        // cadeteria.ReasignarPedidoCadete();
                         break;
                     case 5:
+                        Console.Clear();
+                        System.Console.WriteLine("Ingrese el id del cadete para ver el jornal a cobrar:");
+                        int idCadete = 0;
+                        while(int.TryParse(Console.ReadLine(), out idCadete) && idCadete <= 0 && idCadete>listaCadetes.Count)
+                        {
+                            System.Console.WriteLine("ERROR, ingrese un numero valido");
+                        }
+                        System.Console.WriteLine("----------------------------");
+                        System.Console.WriteLine($"JORNAL A COBRAR:${cadeteria.JornalACobrar(idCadete)}");
+                        System.Console.WriteLine("presione una tecla para continuar...");
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    // case 6:
+                    //     //generamos un informe a traves de las sentencias Linq
+                    //     IEnumerable<Pedidos> pedidosEntregados =  //aqui obtenemos los pedidos que fueron entregados de la lista de pedidos que manejamos exteriormente
+                    //     listaPedidos
+                    //     .Where(pedido => pedido.Estado == Estado.Entregado);
+                        
+
+                    //     IEnumerable<Cadete> cadetesConPedidosEntregados = //tener cuidado con esta expresion query de linq por como procesa las query
+                    //     from cadete in listaCadetes
+                    //     where cadete.ListaPedidos != null && cadete.ListaPedidos.Any(x => x.Estado == Estado.Entregado)
+                    //     select cadete;
+
+                    //     System.Console.WriteLine("-----------------------------------------");
+                    //     System.Console.WriteLine("INFORME PEDIDOS:");
+                    //     System.Console.WriteLine();
+                    //     System.Console.WriteLine("PEDIDOS REALIZADOS POR CADA CADETE");
+                    //     foreach (var cadete in cadetesConPedidosEntregados)
+                    //     {
+                    //         int contador = 0;
+                    //         System.Console.WriteLine("---------------------");
+                    //         cadete.MostrarDatos();
+                    //         foreach (var pedidoEntregado in cadete.ListaPedidos)
+                    //         {
+                    //             if(pedidoEntregado.Estado == Estado.Entregado)
+                    //             {
+                    //                 contador++;
+                    //             }
+                    //         }
+                    //         double promedioPedidos = (double)contador / cadete.ListaPedidos.Count * 100;
+                    //         Math.Round(promedioPedidos,2);
+                    //         System.Console.WriteLine($"Pedidos entregados:{contador}");
+                    //         System.Console.WriteLine($"Promedio de entrega:{promedioPedidos}%");
+                    //         System.Console.WriteLine("---------------------");
+                    //     }
+
+                    //     System.Console.WriteLine($"PEDIDOS TOTAL REALIZADOS EN ESTA JORNADA: {pedidosEntregados.Count()}");
+                    //     System.Console.WriteLine($"GANANCIA TOTAL DE LA JORNADA: {pedidosEntregados.Count() * GANANCIA_PEDIDO_ENTREGADO}");
+
+                    //     break;
+                    case 7:
                         salir = true;
                         break;
                 }
@@ -87,4 +155,3 @@ else
 {
     System.Console.WriteLine("ERROR LA LISTA DE CADETES NO SE PUDO CREAR CORRECTAMENTE. LO SENTIMOS");
 }
-
