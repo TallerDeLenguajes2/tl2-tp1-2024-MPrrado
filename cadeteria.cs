@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using espacioCadetes;
 using espacioPedidos;
 
@@ -7,17 +8,20 @@ namespace espacioCadeteria
     {
         private string nombre;
         private int telefono;
-        private List<Cadete> listadoCadetes;
+        private List<Pedidos> listaPedidos;
         public string Nombre { get => nombre; }
         public int Telefono { get => telefono; }
-        public List<Pedidos> listaPedidos ;
+        public string Nombre1 { get => nombre; set => nombre = value; }
+        public int Telefono1 { get => telefono; set => telefono = value; }
+        public List<Cadete> ListadoCadetes { get; set; }
+        public List<Pedidos> ListaPedidos { get => listaPedidos; set => listaPedidos = value; }
 
         public Cadeteria(string nombre, int telefono, List<Cadete> listadoCadetes)
         {
             this.nombre = nombre;
             this.telefono = telefono;
-            this.listadoCadetes = listadoCadetes;
-            listaPedidos = new List<Pedidos>();
+            this.ListadoCadetes = listadoCadetes;
+            ListaPedidos = new List<Pedidos>();
         }
 
         public void AltaPedidos(ref int nroPedidoAlta, string[] observaciones)
@@ -25,14 +29,14 @@ namespace espacioCadeteria
             Random rnd = new Random();
             Pedidos pedido = new Pedidos(nroPedidoAlta, observaciones[rnd.Next(0, 10)]);
             nroPedidoAlta++;
-            listaPedidos.Add(pedido);
+            ListaPedidos.Add(pedido);
         }
 
         public void AsignarCadeteAPedido(int idCadete, int idPedido)
         {
             //Aquí se selecciona un cadete y se le asigna el pedido
-           listaPedidos[idPedido-1].Cadete = listadoCadetes[idCadete-1];
-           listadoCadetes[idCadete-1].AsignarPedido();
+           ListaPedidos[idPedido-1].Cadete = ListadoCadetes[idCadete-1];
+           ListadoCadetes[idCadete-1].AsignarPedido();
         }
 
         public void CambiarEstadoPedido()
@@ -40,12 +44,12 @@ namespace espacioCadeteria
             int nroPedido;
             MostrarPedidosPendientes();
             System.Console.WriteLine("Seleccione el numero de pedido que desea cambiar de estado");
-            while(!int.TryParse(Console.ReadLine(), out nroPedido) || nroPedido > listaPedidos.Count || nroPedido < 1 || listaPedidos[nroPedido-1].Estado == Estado.Entregado)
+            while(!int.TryParse(Console.ReadLine(), out nroPedido) || nroPedido > ListaPedidos.Count || nroPedido < 1 || ListaPedidos[nroPedido-1].Estado == Estado.Entregado)
             {
                 System.Console.WriteLine("Error ingrese un numero de pedido valido");
             }
 
-            foreach (var pedido in listaPedidos)
+            foreach (var pedido in ListaPedidos)
             {
                 if(pedido.IdPedido == nroPedido)
                 {
@@ -87,7 +91,7 @@ namespace espacioCadeteria
 
             int idPedido;
             System.Console.WriteLine("INGRESE EL NUMERO DE PEDIDO A REASIGNAR: ");
-            while (!int.TryParse(Console.ReadLine(), out idPedido) || idPedido > listaPedidos.Count)
+            while (!int.TryParse(Console.ReadLine(), out idPedido) || idPedido > ListaPedidos.Count)
             {
                 System.Console.WriteLine("ERROR, ingrese un numero valido");
             }
@@ -95,17 +99,17 @@ namespace espacioCadeteria
             MostrarCadetes();
             System.Console.WriteLine("Seleccione el cadete para reasignar el pedido");
             int idCadete;
-            while (!int.TryParse(Console.ReadLine(), out idCadete) || idCadete > listadoCadetes.Count)
+            while (!int.TryParse(Console.ReadLine(), out idCadete) || idCadete > ListadoCadetes.Count)
             {
                 System.Console.WriteLine("ERROR, ingrese un numero valido");
             }
-            if(listaPedidos[idPedido].Cadete == listadoCadetes[idCadete-1])
+            if(ListaPedidos[idPedido].Cadete == ListadoCadetes[idCadete-1])
             {
                 System.Console.WriteLine("El cadete seleccionado ya tiene este pedido, no se puede reasignar");
                 Thread.Sleep(500);
             }else
             {
-                listaPedidos[idPedido-1].Cadete = listadoCadetes[idCadete-1];
+                ListaPedidos[idPedido-1].Cadete = ListadoCadetes[idCadete-1];
             }
 
         }
@@ -115,7 +119,7 @@ namespace espacioCadeteria
             System.Console.WriteLine("Los pedidos disponibles son:");
             System.Console.WriteLine();
             System.Console.WriteLine();
-            foreach (var pedido in listaPedidos)
+            foreach (var pedido in ListaPedidos)
             {
                 if (pedido.Estado != Estado.Entregado)
                 {
@@ -129,7 +133,7 @@ namespace espacioCadeteria
         {
             System.Console.WriteLine("----------CADETES DISPONIBLES----------");
             System.Console.WriteLine();
-            foreach (var cadete in listadoCadetes)
+            foreach (var cadete in ListadoCadetes)
             {
                 cadete.MostrarID();
                 cadete.MostrarDatos();
@@ -143,9 +147,9 @@ namespace espacioCadeteria
             double jornal = 5000;
             System.Console.WriteLine($"El cadete de ID:{idCadete}");
             System.Console.WriteLine();
-            listadoCadetes[idCadete-1].MostrarDatos();
+            ListadoCadetes[idCadete-1].MostrarDatos();
             IEnumerable<Pedidos> listaPedidosEntregados = 
-            listaPedidos
+            ListaPedidos
             .Where(p =>p.Estado == Estado.Entregado && p.Cadete != null);
             listaPedidosEntregados.ToList();
             foreach(var pedido in listaPedidosEntregados)

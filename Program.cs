@@ -16,17 +16,48 @@ const int CANTIDAD_PEDIDOS = 10;
 const int GANANCIA_PEDIDO_ENTREGADO = 10000;
 
 //variables e instanciaciones
- int idPedido;
- int idCadete;
+int opcionInicio;
+int idPedido;
+int idCadete;
+List<Cadete> cadetes = null;
+Cadeteria cadeteria = null;
 // List<Pedidos> listaPedidos = new List<Pedidos>(); //creamos esta lista para poder manejarnos mas facilmente con el alta de pedidos
 // List<Cliente> listaClientes = CargarDatos.CargarDatosClientes();
-List<Cadete> cadetes = CargarDatos.CargarDatosCadete();
+
+do
+{
+    System.Console.WriteLine("-----INCIO SISTEMA-----");
+    System.Console.WriteLine("[1] CARGAR DATOS A TRAVES DE CSV");
+    System.Console.WriteLine("[2] CARGAR DATOS A TRAVES DE JSON");
+    System.Console.WriteLine("INGRESE UNA OPCION");
+}while (!int.TryParse(Console.ReadLine(), out  opcionInicio )|| opcionInicio < 1  || opcionInicio > 2);
+switch (opcionInicio)
+{
+    case 1: 
+        AccesoCSV cargarDatosCSV = new AccesoCSV();
+        cadetes = cargarDatosCSV.CargarDatosCadetes();
+        if (cadetes!= null)
+        {
+            cadeteria = cargarDatosCSV.CargarDatosCadeteria(cadetes);
+        }
+        break;
+    case 2: 
+        AccesoJSON cargarDatosJSON = new AccesoJSON();
+        cadetes = cargarDatosJSON.CargarDatosCadetes();
+        if (cadetes!= null)
+        {
+            cadeteria = cargarDatosJSON.CargarDatosCadeteria(cadetes);
+        }
+        break;
+}
+
 if (cadetes != null)
 {
-    Cadeteria cadeteria = CargarDatos.CargarDatosCadeteria(cadetes);
     if (cadeteria != null)
     {
         System.Console.WriteLine("CADETERIA CARGADA CON ÉXITO");
+        Thread.Sleep(500);
+        Console.Clear();
         int nroPedido = 1;
         int opcion = 0;
         bool salir = false;
@@ -55,7 +86,7 @@ if (cadetes != null)
                         Console.Clear();
                         break;
                     case 2:
-                        if (cadeteria.listaPedidos.Count() != 0)
+                        if (cadeteria.ListaPedidos.Count() != 0)
                         {
                             idPedido = SolicitudIdPedido(cadeteria);
                             idCadete = SolicitudIdCadete(cadetes, cadeteria);
@@ -91,7 +122,7 @@ if (cadetes != null)
                     case 6:
                         //generamos un informe a traves de las sentencias Linq
                         IEnumerable<Pedidos> pedidosEntregados =  //aqui obtenemos los pedidos que fueron entregados de la lista de pedidos que manejamos exteriormente
-                        cadeteria.listaPedidos
+                        cadeteria.ListaPedidos
                         .Where(pedido => pedido.Estado == Estado.Entregado);
                         
 
@@ -104,10 +135,10 @@ if (cadetes != null)
                         foreach (var pedido in pedidosEntregados)
                         {
                            
-                            double promedioPedidos = (double) pedido.Cadete.CantidadPedidosEntregados() / pedido.Cadete.CantidadPedidosAsignados()*100;
+                            double promedioPedidos = (double) pedido.Cadete.ObtenerCantidadPedidosEntregados() / pedido.Cadete.ObtenerCantidadPedidosAsignados()*100;
                             System.Console.WriteLine("Datos cadete: ");
                             pedido.Cadete.MostrarDatos();
-                            System.Console.WriteLine($"Pedidos entregados:{pedido.Cadete.CantidadPedidosEntregados()}");
+                            System.Console.WriteLine($"Pedidos entregados:{pedido.Cadete.ObtenerCantidadPedidosEntregados()}");
                             System.Console.WriteLine($"Promedio de entrega:{Math.Round(promedioPedidos,2)}%");
                             System.Console.WriteLine("---------------------");
                         }
@@ -150,7 +181,7 @@ static int SolicitudIdPedido(Cadeteria cadeteria)
     int idPedido;
     cadeteria.MostrarPedidosPendientes();
     System.Console.WriteLine("Ingrese el id del pedido: ");
-    while (!int.TryParse(Console.ReadLine(), out idPedido) || !cadeteria.listaPedidos.Exists(p => p.IdPedido == idPedido))
+    while (!int.TryParse(Console.ReadLine(), out idPedido) || !cadeteria.ListaPedidos.Exists(p => p.IdPedido == idPedido))
     {
         System.Console.WriteLine("ERROR, INGRESE UN ID VALIDO");
     }

@@ -1,23 +1,28 @@
 using espacioPedidos;
+using System.Text.Json.Serialization;
 namespace espacioCadetes
 {
     public class Cadete
     {
-        private int id;
-        private string nombre;
-        private string direccion;
-        private int telefono;
-        private int cantidadPedidosEntregados;
-        private int cantidadPedidosAsignados;
-
-        public int Id { get => id;}
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
+        [JsonPropertyName("nombre")]
+        public string Nombre { get; set; }
+        [JsonPropertyName("direccion")]
+        public string Direccion { get; set; }
+        [JsonPropertyName("telefono")]
+        public int Telefono { get; set; }
+        [JsonPropertyName("cantidadPedidosEntregados")]
+        public int CantidadPedidosEntregados { get; set; }
+        [JsonPropertyName("cantidadPedidosAsignados")]
+        public int CantidadPedidosAsignados { get; set; }
 
         public Cadete(int id, string nombre, string direccion, int telefono)
         {
-            this.id = id;
-            this.nombre = nombre;
-            this.direccion = direccion;
-            this.telefono = telefono;
+            Id = id;
+            Nombre = nombre;
+            Direccion = direccion;
+            Telefono = telefono;
         }
 
         public void MostrarID()
@@ -27,26 +32,26 @@ namespace espacioCadetes
 
         public void MostrarDatos()
         {
-            System.Console.WriteLine($"Nombre: {nombre}\nDirección: {direccion}\nTeléfono: {telefono}");
+            System.Console.WriteLine($"Nombre: {Nombre}\nDirección: {Direccion}\nTeléfono: {Telefono}");
         }
 
         public void EntregarPedido()
         {
-            cantidadPedidosEntregados++;
+            CantidadPedidosEntregados++;
         }
         public void AsignarPedido()
         {
-            cantidadPedidosAsignados++;
+            CantidadPedidosAsignados++;
         }
 
-        public int CantidadPedidosEntregados()
+        public int ObtenerCantidadPedidosEntregados()
         {
-            return cantidadPedidosEntregados;
+            return CantidadPedidosEntregados;
         }
 
-        public int CantidadPedidosAsignados()
+        public int ObtenerCantidadPedidosAsignados()
         {
-            return cantidadPedidosAsignados;
+            return CantidadPedidosAsignados;
         }
     }
 
