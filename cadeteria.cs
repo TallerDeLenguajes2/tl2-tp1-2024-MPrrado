@@ -10,7 +10,7 @@ namespace espacioCadeteria
         private List<Cadete> listadoCadetes;
         public string Nombre { get => nombre; }
         public int Telefono { get => telefono; }
-        public List<Pedidos> listaPedidos;
+        public List<Pedidos> listaPedidos ;
 
         public Cadeteria(string nombre, int telefono, List<Cadete> listadoCadetes)
         {
@@ -31,8 +31,13 @@ namespace espacioCadeteria
         public void AsignarCadeteAPedido(int idCadete, int idPedido)
         {
             //Aquí se selecciona un cadete y se le asigna el pedido
+<<<<<<< HEAD
            listaPedidos[idPedido-1].Cadete = listadoCadetes[idCadete-1];
            listadoCadetes[idCadete-1].AsignarPedido();
+=======
+            listaPedidos[idPedido-1].Cadete = listadoCadetes[idCadete];
+
+>>>>>>> f2b1b3044b45bb08714c8347cd9ff8bf7ed224db
         }
 
         public void CambiarEstadoPedido()
@@ -81,6 +86,7 @@ namespace espacioCadeteria
             }
         }
 
+<<<<<<< HEAD
         public void ReasignarPedidoCadete()
         {
             MostrarPedidosPendientes();
@@ -126,6 +132,47 @@ namespace espacioCadeteria
         }
 
         public void MostrarCadetes()
+=======
+        // public void ReasignarPedidoCadete()
+        // {
+        //     System.Console.WriteLine("Los pedidos disponibles para reasignar son:");
+        //     System.Console.WriteLine();
+        //     System.Console.WriteLine();
+        //     foreach (var pedido in listaPedidos)
+        //     {
+        //         if (pedido.Estado != Estado.Cancelado || pedido.Estado != Estado.Entregado)
+        //         {
+        //             pedido.mostrarPedido();
+        //         }
+        //         System.Console.WriteLine("---------------------------------------");
+        //     }
+        //     int nroPedido;
+        //     System.Console.WriteLine("INGRESE EL NUMERO DE PEDIDO A REASIGNAR: ");
+        //     while (!int.TryParse(Console.ReadLine(), out nroPedido) || nroPedido > listaPedidos.Count)
+        //     {
+        //         System.Console.WriteLine("ERROR, ingrese un numero valido");
+        //     }
+
+        //     MostrarCadetes();
+        //     System.Console.WriteLine("Seleccione el cadete para reasignar el pedido");
+        //     int nroCadete;
+        //     while (!int.TryParse(Console.ReadLine(), out nroCadete) || nroCadete > listadoCadetes.Count)
+        //     {
+        //         System.Console.WriteLine("ERROR, ingrese un numero valido");
+        //     }
+        //     foreach (var pedido in listaPedidos)
+        //     {
+        //         if (pedido.Cadete.Id == nroCadete)
+        //         {
+        //             cadete.RemoverPedido(listaPedidos[nroPedido - 1]);
+        //             listadoCadetes[nroCadete-1].AgregarPedido(listaPedidos[nroPedido-1]);
+        //             break;
+        //         }
+        //     }
+
+        // }
+        private void MostrarCadetes()
+>>>>>>> f2b1b3044b45bb08714c8347cd9ff8bf7ed224db
         {
             System.Console.WriteLine("----------CADETES DISPONIBLES----------");
             System.Console.WriteLine();

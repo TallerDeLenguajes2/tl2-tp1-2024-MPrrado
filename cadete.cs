@@ -12,6 +12,10 @@ namespace espacioCadetes
 
         public int Id { get => id;}
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> f2b1b3044b45bb08714c8347cd9ff8bf7ed224db
         public Cadete(int id, string nombre, string direccion, int telefono)
         {
             this.id = id;
@@ -29,6 +33,7 @@ namespace espacioCadetes
         {
             System.Console.WriteLine($"Nombre: {nombre}\nDirección: {direccion}\nTeléfono: {telefono}");
         }
+<<<<<<< HEAD
 
         public void EntregarPedido()
         {
@@ -48,6 +53,8 @@ namespace espacioCadetes
         {
             return cantidadPedidosAsignados;
         }
+=======
+>>>>>>> f2b1b3044b45bb08714c8347cd9ff8bf7ed224db
     }
 
 }
