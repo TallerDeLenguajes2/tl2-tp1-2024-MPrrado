@@ -12,21 +12,21 @@ namespace espacioPedidos
 {
     public class Pedidos
     {
-        private int nroPedido;
+        private int idPedido;
         private string observacion;
         private Cliente cliente;
         private Estado estado;
         private Cadete cadete;
-        public int NroPedido { get => nroPedido; }
+        public int IdPedido { get => idPedido; }
         internal Estado Estado { get => estado; set => estado = value; }
         public Cadete Cadete { get => cadete; set => cadete = value; }
 
         public Pedidos(int nroPedido, string observaciones)
         {
-            this.nroPedido = nroPedido;
-            this.observacion = observaciones;
+            idPedido = nroPedido;
+            observacion = observaciones;
             cliente = new Cliente ($"matias prado{nroPedido}", "santa fe 3333", "porton negro", 381);
-            this.estado = Estado.Pendiente;
+            estado = Estado.Pendiente;
         }
         public void VerDireccionCliente()
         {
@@ -43,7 +43,7 @@ namespace espacioPedidos
 
         public void mostrarPedido()
         {
-            System.Console.WriteLine($"Numero de pedido: {nroPedido}");
+            System.Console.WriteLine($"Numero de pedido: {idPedido}");
             System.Console.WriteLine($"Observacion: {observacion}");
             System.Console.WriteLine($"Datos cliente:\nNombre: {cliente.nombre}\nDireccion: {cliente.direccion}\nReferencia direccion: {cliente.refDireccion}\nTelefono: {cliente.telefono}");
             System.Console.WriteLine($"Estado: {estado}");
