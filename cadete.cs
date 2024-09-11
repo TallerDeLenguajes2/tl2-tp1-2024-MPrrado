@@ -7,12 +7,10 @@ namespace espacioCadetes
         private string nombre;
         private string direccion;
         private int telefono;
+        private int cantidadPedidosEntregados;
+        private int cantidadPedidosAsignados;
 
         public int Id { get => id;}
-
-        // private List<Pedidos> listaPedidos;
-
-        // public List<Pedidos> ListaPedidos { get => listaPedidos;}
 
         public Cadete(int id, string nombre, string direccion, int telefono)
         {
@@ -20,16 +18,7 @@ namespace espacioCadetes
             this.nombre = nombre;
             this.direccion = direccion;
             this.telefono = telefono;
-            // listaPedidos = new List<Pedidos>();
         }
-
-        // public void MostrarPedidos()
-        // {
-        //     foreach (var pedido in listaPedidos)
-        //     {
-        //         System.Console.WriteLine($"-------Pedido Nro: {pedido.NroPedido}, Estado: {pedido.Estado}");
-        //     }
-        // }
 
         public void MostrarID()
         {
@@ -40,22 +29,25 @@ namespace espacioCadetes
         {
             System.Console.WriteLine($"Nombre: {nombre}\nDirección: {direccion}\nTeléfono: {telefono}");
         }
-    
-        // public void AgregarPedido(Pedidos pedido)
-        // {
-        //     listaPedidos.Add(pedido);
-        // }
 
-        // public void RemoverPedido(Pedidos pedido)
-        // {
-        //     listaPedidos.Remove(pedido);
-        // }
+        public void EntregarPedido()
+        {
+            cantidadPedidosEntregados++;
+        }
+        public void AsignarPedido()
+        {
+            cantidadPedidosAsignados++;
+        }
 
-        // public bool PertenecePedido(Pedidos pedido)
-        // {
-        //     return listaPedidos.Contains(pedido);
-        // }
+        public int CantidadPedidosEntregados()
+        {
+            return cantidadPedidosEntregados;
+        }
 
+        public int CantidadPedidosAsignados()
+        {
+            return cantidadPedidosAsignados;
+        }
     }
 
 }
